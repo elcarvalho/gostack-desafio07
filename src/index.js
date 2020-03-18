@@ -1,13 +1,17 @@
 import 'react-native-gesture-handler';
 
 import React from 'react';
-import {View, Text} from 'react-native';
+import {StatusBar} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+
+import Routes from './routes';
 
 const App = () => {
   return (
-    <View>
-      <Text>Rocketshoes Mobile</Text>
-    </View>
+    <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+      <Routes />
+    </NavigationContainer>
   );
 };
 
