@@ -1,5 +1,4 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -48,7 +47,7 @@ export default function Main({navigation}) {
             <ProductPrice>{item.price}</ProductPrice>
             <ButtonContainer>
               <BasketContainer>
-                <Icon name="shopping-basket" size={24} color="#fff" />
+                <Icon name="add-shopping-cart" size={24} color="#fff" />
                 <BasketText>1</BasketText>
               </BasketContainer>
               <TextButton>ADICIONAR</TextButton>
