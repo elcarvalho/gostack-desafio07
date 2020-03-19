@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import api from '../../services/api';
 import {formatPrice} from '../../util/format';
 
-import {addToCart} from '../../store/modules/cart/actions';
+import {addToCartRequest} from '../../store/modules/cart/actions';
 
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -61,7 +61,7 @@ export default function Main() {
               </BasketContainer>
               <AddButton
                 onPress={() => {
-                  dispatch(addToCart(product));
+                  dispatch(addToCartRequest(product.id));
                   console.log(product);
                 }}>
                 <TextButton>ADICIONAR</TextButton>

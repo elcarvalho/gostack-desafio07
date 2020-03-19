@@ -38,7 +38,7 @@ export default function Cart() {
                 <ItemImage source={{uri: product.image}} />
                 <ItemDetails>
                   <Text>{product.title}</Text>
-                  <FormattedPrice>{product.formattedPrice}</FormattedPrice>
+                  <FormattedPrice>{product.priceFormatted}</FormattedPrice>
                 </ItemDetails>
               </CartItemDetails>
               <CartItemSubtotals>
