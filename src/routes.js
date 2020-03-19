@@ -17,7 +17,7 @@ const Routes = () => {
         header: ({navigation}) => <Header {...navigation} />,
       }}>
       <Stack.Screen name="Main" component={Main} />
-      <Stack.Screen name="Cart" component={Cart} options={{title: 'Cart'}} />
+      <Stack.Screen name="Cart" component={Cart} />
     </Stack.Navigator>
   );
 };
