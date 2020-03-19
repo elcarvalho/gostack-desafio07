@@ -11,6 +11,7 @@ export const Container = styled.View`
   background: #fff;
   border-radius: 4px;
   padding: 10px 15px;
+  max-height: 750px;
 `;
 
 export const CartItemContainer = styled.View`
@@ -74,14 +75,14 @@ export const TitleFooter = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: #999;
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 export const ContentFooter = styled.Text`
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 export const FinishButton = styled(RectButton)`

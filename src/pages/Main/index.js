@@ -59,11 +59,7 @@ export default function Main() {
                 <Icon name="add-shopping-cart" size={24} color="#fff" />
                 <BasketText>1</BasketText>
               </BasketContainer>
-              <AddButton
-                onPress={() => {
-                  dispatch(addToCartRequest(product.id));
-                  console.log(product);
-                }}>
+              <AddButton onPress={() => dispatch(addToCartRequest(product.id))}>
                 <TextButton>ADICIONAR</TextButton>
               </AddButton>
             </ButtonContainer>

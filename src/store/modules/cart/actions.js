@@ -11,3 +11,19 @@ export function addToCartSuccess(product) {
     product,
   };
 }
+
+export function updateCartRequest(id, amount) {
+  return {
+    type: '@cart/UPDATE_REQUEST',
+    id,
+    amount,
+  };
+}
+
+export function updateCartSuccess(id, amount) {
+  return {
+    type: '@cart/UPDATE_SUCCESS',
+    id,
+    amount,
+  };
+}

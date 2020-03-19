@@ -1,7 +1,9 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {Text} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+
+import {formatPrice} from '../../util/format';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -23,14 +25,42 @@ import {
   TextButton,
 } from './styles';
 
+import {updateCartRequest} from '../../store/modules/cart/actions';
+
 export default function Cart() {
+  const [productList, setProductList] = useState([]);
+  const [total, setTotal] = useState(0);
   const products = useSelector(state => state.cart.products);
+
+  useEffect(() => {
+    const _products = products.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+      subtotal: formatPrice(product.amount * product.price),
+    }));
+
+    const _total = products.reduce(
+      (total, product) => total + product.amount * product.price,
+      0
+    );
+
+    setProductList(_products);
+    setTotal(formatPrice(_total));
+  }, [products]);
+
+  const dispatch = useDispatch();
+
+  const handleAddItem = product =>
+    dispatch(updateCartRequest(product.id, product.amount + 1));
+
+  const handleRemoveItem = product =>
+    dispatch(updateCartRequest(product.id, product.amount - 1));
 
   return (
     <SafeContainer>
       <Container>
         <FlatList
-          data={products}
+          data={productList}
           keyExtractor={product => String(product.id)}
           renderItem={({item: product}) => (
             <CartItemContainer>
@@ -43,7 +73,7 @@ export default function Cart() {
               </CartItemDetails>
               <CartItemSubtotals>
                 <ItemCount>
-                  <UpdateButton>
+                  <UpdateButton onPress={() => handleRemoveItem(product)}>
                     <Icon
                       name="remove-circle-outline"
                       size={20}
@@ -54,7 +84,7 @@ export default function Cart() {
                     value={String(product.amount)}
                     editable={false}
                   />
-                  <UpdateButton>
+                  <UpdateButton onPress={() => handleAddItem(product)}>
                     <Icon name="add-circle-outline" size={20} color="#7159c1" />
                   </UpdateButton>
                 </ItemCount>
@@ -66,7 +96,7 @@ export default function Cart() {
 
         <FooterContainer>
           <TitleFooter>TOTAL</TitleFooter>
-          <ContentFooter>R$ 1000,00</ContentFooter>
+          <ContentFooter>{total}</ContentFooter>
           <FinishButton>
             <TextButton>FINALIZAR PEDIDO</TextButton>
           </FinishButton>

@@ -13,6 +13,11 @@ export default function cart(state = INITIAL_STATE, action) {
         draft.products.push(action.product);
         break;
 
+      case '@cart/UPDATE_SUCCESS':
+        const productIndex = draft.products.findIndex(p => p.id === action.id);
+        draft.products[productIndex].amount = action.amount;
+        break;
+
       default:
         break;
     }
