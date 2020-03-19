@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+
+import api from '../../services/api';
+import {formatPrice} from '../../util/format';
+
+import {addToCart} from '../../store/modules/cart/actions';
+
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -11,46 +18,54 @@ import {
   ButtonContainer,
   BasketContainer,
   BasketText,
+  AddButton,
   TextButton,
 } from './styles';
 
-const data = {
-  products: [
-    {
-      id: 1,
-      title: 'Tênis de Caminhada Leve e muito Confortável Confortável',
-      price: 'R$ 179,90',
-      image:
-        'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg',
-    },
-    {
-      id: 2,
-      title: 'Tênis VR Caminhada Confortável Detalhes Couro Masculino',
-      price: 'R$ 139.90',
-      image:
-        'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg',
-    },
-  ],
-};
+export default function Main() {
+  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
-export default function Main({navigation}) {
+  useEffect(() => {
+    async function getProducts() {
+      try {
+        const response = await api.get('/products');
+        const products = response.data.map(product => ({
+          ...product,
+          priceFormatted: formatPrice(product.price),
+        }));
+        setProducts(products);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getProducts();
+  }, []);
+
   return (
     <SafeContainer>
       <FlatList
-        data={data.products}
+        data={products}
         keyExtractor={item => String(item.id)}
         horizontal={true}
-        renderItem={({item}) => (
+        renderItem={({item: product}) => (
           <ProductContainer>
-            <ProductImage source={{uri: item.image}} />
-            <ProductTitle>{item.title}</ProductTitle>
-            <ProductPrice>{item.price}</ProductPrice>
+            <ProductImage source={{uri: product.image}} />
+            <ProductTitle>{product.title}</ProductTitle>
+            <ProductPrice>{product.priceFormatted}</ProductPrice>
             <ButtonContainer>
               <BasketContainer>
                 <Icon name="add-shopping-cart" size={24} color="#fff" />
                 <BasketText>1</BasketText>
               </BasketContainer>
-              <TextButton>ADICIONAR</TextButton>
+              <AddButton
+                onPress={() => {
+                  dispatch(addToCart(product));
+                  console.log(product);
+                }}>
+                <TextButton>ADICIONAR</TextButton>
+              </AddButton>
             </ButtonContainer>
           </ProductContainer>
         )}

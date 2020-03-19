@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import {Text} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 
@@ -23,36 +24,13 @@ import {
 } from './styles';
 
 export default function Cart() {
-  const data = {
-    products: [
-      {
-        id: 1,
-        title: 'Tênis de Caminhada Leve e muito Confortável Confortável',
-        price: 'R$ 179,90',
-        image:
-          'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg',
-        amount: 2,
-        formattedPrice: 'R$ 179,90',
-        subtotal: 'R$ 359,80',
-      },
-      {
-        id: 2,
-        title: 'Tênis de Caminhada Leve e muito Confortável Confortável',
-        price: 'R$ 179,90',
-        image:
-          'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg',
-        amount: 2,
-        formattedPrice: 'R$ 179,90',
-        subtotal: 'R$ 359,80',
-      },
-    ],
-  };
+  const products = useSelector(state => state.cart.products);
 
   return (
     <SafeContainer>
       <Container>
         <FlatList
-          data={data.products}
+          data={products}
           keyExtractor={product => String(product.id)}
           renderItem={({item: product}) => (
             <CartItemContainer>

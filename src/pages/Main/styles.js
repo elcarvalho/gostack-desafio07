@@ -34,9 +34,10 @@ export const ProductPrice = styled.Text`
   text-align: left;
   width: 100%;
   margin-bottom: 5px;
+  margin-top: auto;
 `;
 
-export const ButtonContainer = styled(RectButton)`
+export const ButtonContainer = styled.View`
   background: #7150c1;
   flex-direction: row;
   align-items: center;
@@ -59,10 +60,13 @@ export const BasketText = styled.Text`
   color: #fff;
 `;
 
+export const AddButton = styled(RectButton)`
+  flex: 1;
+`;
+
 export const TextButton = styled.Text`
   color: #fff;
   font-size: 14px;
   font-weight: bold;
-  flex: 1;
   text-align: center;
 `;
