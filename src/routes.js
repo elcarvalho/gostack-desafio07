@@ -13,15 +13,10 @@ const Routes = () => {
     <Stack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
+        headerTitle: '',
+        header: ({navigation}) => <Header {...navigation} />,
       }}>
-      <Stack.Screen
-        name="Main"
-        component={Main}
-        options={{
-          headerTitle: '',
-          header: () => <Header />,
-        }}
-      />
+      <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="Cart" component={Cart} options={{title: 'Cart'}} />
     </Stack.Navigator>
   );

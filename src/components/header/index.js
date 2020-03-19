@@ -9,12 +9,12 @@ import {
   ItemCount,
 } from './styles';
 
-export default function header() {
+export default function header({navigate}) {
   return (
     <SafeContainer>
       <Container>
         <Logo />
-        <BasketContainer>
+        <BasketContainer onPress={() => navigate('Cart')}>
           <Icon name="shopping-basket" size={24} color="#fff" />
           <ItemCount>3</ItemCount>
         </BasketContainer>
