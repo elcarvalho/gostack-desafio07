@@ -1,6 +1,6 @@
+import {Alert} from 'react-native';
 import {all, takeLatest, call, put, select} from 'redux-saga/effects';
 
-import {formatPrice} from '../../../util/format';
 import api from '../../../services/api';
 
 import {addToCartSuccess, updateCartSuccess} from './actions';
@@ -19,7 +19,10 @@ function* addToCartRequest({id}) {
   const amount = currentAmount + 1;
 
   if (amount > sotckAmount) {
-    console.log('Estoque insuficiente');
+    Alert.alert(
+      'Estoque insuficiente',
+      'No momento não temos a quantidade solicitada.'
+    );
     return;
   }
 
@@ -42,7 +45,10 @@ function* updateCartResquest({id, amount}) {
   const stock = stockRequest.data;
 
   if (amount > stock.amount) {
-    console.log('Estoque insuficiente.');
+    Alert.alert(
+      'Estoque insuficiente',
+      'No momento não temos a quantidade solicitada.'
+    );
     return;
   }
 

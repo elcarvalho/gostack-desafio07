@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Text} from 'react-native';
+import {Text, Alert} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 
 import {formatPrice} from '../../util/format';
@@ -13,6 +13,7 @@ import {
   CartItemDetails,
   ItemImage,
   ItemDetails,
+  RemoveButton,
   CartItemSubtotals,
   ItemCount,
   UpdateButton,
@@ -23,13 +24,19 @@ import {
   ContentFooter,
   FinishButton,
   TextButton,
+  EmptyCart,
+  TextEmpty,
 } from './styles';
 
-import {updateCartRequest} from '../../store/modules/cart/actions';
+import {
+  updateCartRequest,
+  removeFromCart,
+} from '../../store/modules/cart/actions';
 
-export default function Cart() {
+export default function Cart({navigation}) {
   const [productList, setProductList] = useState([]);
   const [total, setTotal] = useState(0);
+  const [cartEmpty, setCartEmpty] = useState(true);
   const products = useSelector(state => state.cart.products);
 
   useEffect(() => {
@@ -46,20 +53,41 @@ export default function Cart() {
 
     setProductList(_products);
     setTotal(formatPrice(_total));
+    setCartEmpty(products.length > 0);
   }, [products]);
 
   const dispatch = useDispatch();
 
-  const handleAddItem = product =>
+  const handleIncrement = product =>
     dispatch(updateCartRequest(product.id, product.amount + 1));
 
-  const handleRemoveItem = product =>
+  const handleDecrement = product =>
     dispatch(updateCartRequest(product.id, product.amount - 1));
+
+  const handleFinishCart = () =>
+    Alert.alert('Finalizar compra', 'Deseja ir para o pagamento?', [
+      {
+        text: 'Continuar comprando',
+        onPress: () => navigation.navigate('Main'),
+      },
+      {
+        text: 'Pagamento',
+        onPress: () => console.log('checkout'),
+      },
+    ]);
+
+  const emptyCart = () => (
+    <EmptyCart>
+      <Icon name="remove-shopping-cart" size={40} color="#ddd" />
+      <TextEmpty>Carrinho vazio</TextEmpty>
+    </EmptyCart>
+  );
 
   return (
     <SafeContainer>
       <Container>
         <FlatList
+          ListEmptyComponent={emptyCart}
           data={productList}
           keyExtractor={product => String(product.id)}
           renderItem={({item: product}) => (
@@ -70,10 +98,14 @@ export default function Cart() {
                   <Text>{product.title}</Text>
                   <FormattedPrice>{product.priceFormatted}</FormattedPrice>
                 </ItemDetails>
+                <RemoveButton
+                  onPress={() => dispatch(removeFromCart(product.id))}>
+                  <Icon name="delete-forever" size={20} color="#7159c1" />
+                </RemoveButton>
               </CartItemDetails>
               <CartItemSubtotals>
                 <ItemCount>
-                  <UpdateButton onPress={() => handleRemoveItem(product)}>
+                  <UpdateButton onPress={() => handleDecrement(product)}>
                     <Icon
                       name="remove-circle-outline"
                       size={20}
@@ -84,7 +116,7 @@ export default function Cart() {
                     value={String(product.amount)}
                     editable={false}
                   />
-                  <UpdateButton onPress={() => handleAddItem(product)}>
+                  <UpdateButton onPress={() => handleIncrement(product)}>
                     <Icon name="add-circle-outline" size={20} color="#7159c1" />
                   </UpdateButton>
                 </ItemCount>
@@ -94,13 +126,15 @@ export default function Cart() {
           )}
         />
 
-        <FooterContainer>
-          <TitleFooter>TOTAL</TitleFooter>
-          <ContentFooter>{total}</ContentFooter>
-          <FinishButton>
-            <TextButton>FINALIZAR PEDIDO</TextButton>
-          </FinishButton>
-        </FooterContainer>
+        {cartEmpty && (
+          <FooterContainer>
+            <TitleFooter>TOTAL</TitleFooter>
+            <ContentFooter>{total}</ContentFooter>
+            <FinishButton onPress={handleFinishCart}>
+              <TextButton>FINALIZAR PEDIDO</TextButton>
+            </FinishButton>
+          </FooterContainer>
+        )}
       </Container>
     </SafeContainer>
   );

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useEffect, useState, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import api from '../../services/api';
 import {formatPrice} from '../../util/format';
@@ -24,7 +24,19 @@ import {
 
 export default function Main() {
   const [products, setProducts] = useState([]);
+  const cartProducts = useSelector(state => state.cart.products);
+
   const dispatch = useDispatch();
+
+  const amount = useMemo(
+    () =>
+      cartProducts.reduce((amount, product) => {
+        amount[product.id] = product.amount;
+
+        return amount;
+      }, {}),
+    [cartProducts]
+  );
 
   useEffect(() => {
     async function getProducts() {
@@ -57,7 +69,7 @@ export default function Main() {
             <ButtonContainer>
               <BasketContainer>
                 <Icon name="add-shopping-cart" size={24} color="#fff" />
-                <BasketText>1</BasketText>
+                <BasketText>{amount[product.id] || 0}</BasketText>
               </BasketContainer>
               <AddButton onPress={() => dispatch(addToCartRequest(product.id))}>
                 <TextButton>ADICIONAR</TextButton>

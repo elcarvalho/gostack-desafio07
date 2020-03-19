@@ -35,6 +35,14 @@ export const ItemDetails = styled.View`
   flex: 1;
 `;
 
+export const RemoveButton = styled(RectButton)`
+  height: 100%;
+  width: 40px;
+  margin-left: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const CartItemSubtotals = styled.View`
   background: #eee;
   border-radius: 4px;
@@ -96,4 +104,16 @@ export const FinishButton = styled(RectButton)`
 export const TextButton = styled.Text`
   color: #fff;
   font-weight: bold;
+`;
+
+export const EmptyCart = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+`;
+
+export const TextEmpty = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 15px;
 `;

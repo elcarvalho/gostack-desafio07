@@ -27,3 +27,10 @@ export function updateCartSuccess(id, amount) {
     amount,
   };
 }
+
+export function removeFromCart(id) {
+  return {
+    type: '@cart/REMOVE_FROM_CART',
+    id,
+  };
+}
